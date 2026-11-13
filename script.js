@@ -160,3 +160,32 @@ function changeStatus()
     document.getElementById("message_change").textContent = "Ticket status updated successfully.";
     filter();
 }
+
+// LisLogic
+const lisioImg = document.getElementById("Fox");
+
+function createParticle(x, y) {
+  const particle = document.createElement("img");
+  particle.classList.add("particle");
+  particle.src = "heart.png";
+  particle.style.left = `${x}px`;
+  particle.style.top = `${y}px`;
+  
+  document.body.appendChild(particle);
+  return particle;
+}
+
+lisioImg.addEventListener("click", function(event) {
+  let soundId=Math.floor(Math.random() * 9)+1;
+  const foxSound=new Audio('./foxSounds/foxsound'+soundId+'.wav');
+  foxSound.play();
+
+  const x = event.pageX;
+  const y = event.pageY;
+  
+  const particle = createParticle(x, y);
+  
+  particle.addEventListener("animationend", function() {
+    particle.remove();
+  });
+});

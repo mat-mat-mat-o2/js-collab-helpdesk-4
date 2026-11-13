@@ -167,3 +167,26 @@ p {
         grid-template-columns: 1fr;
     }
 }
+
+#Fox {
+    position: relative;
+}
+
+.particle {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    pointer-events: none;
+    animation: particle-animation 1s ease-out forwards;
+}
+
+@keyframes particle-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -100px) scale(1.2);
+        opacity: 0;
+    }
+}
