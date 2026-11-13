@@ -179,7 +179,7 @@ p {
 }
 
 #Fox {
-    position: absolute;
+    position: fixed;
     left: 30px;
     bottom: 20px;
     width: 180px;
