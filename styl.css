@@ -1,9 +1,21 @@
+@keyframes snow_animation {
+  0% {background-position:0 0, 0 0, 0 0;}
+  25% {background-position: 100px 200px, -50px 150px, 50px 100px;}
+  50% {background-position: 200px 400px, -100px 300px, 100px 200px;}
+  75% {background-position: 300px 600px, -150px 450px, 150px 300px;}
+  100% {background-position: 400px 800px, -200px 600px, 200px 400px;}
+}
+
 body {
     background-color: lightblue;
     font-size: 17px;
     font-family: Comic Sans MS;
     color: #3D3D3B;
+    animation: snow_animation 10s linear infinite;
+    background-image: url('snow.png');
 }
+
+
 
 h1, h2 {
     background-color: #DCDCDC;
@@ -28,11 +40,9 @@ input[type="text"] {
     font-family: Comic Sans MS;
     font-size: 16px;
     outline: none;
-    transition: width 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]:focus {
-    width: 40%;
     border-color: #3D3D3B;
     box-shadow: 0 0 5px #777;
 }
@@ -166,4 +176,22 @@ p {
     .panels {
         grid-template-columns: 1fr;
     }
+}
+
+
+.footer {
+    background-image: url('snow_footer.png');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% 100%;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 200px;
+
+    pointer-events: none;
+    z-index: -1;
 }
