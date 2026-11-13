@@ -1,3 +1,6 @@
+let ticketCounter = Number(localStorage.getItem("ticketCounter")) || 1;
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+
 function lightSnowman() 
 {
     let img = document.getElementById("Snowman");
@@ -10,21 +13,18 @@ function lightSnowman()
     }
 }
 
-let ticketCounter = 1;
-const tickets = [];
+function saveToStorage() {
+    localStorage.setItem("tickets", JSON.stringify(tickets));
+    localStorage.setItem("ticketCounter", ticketCounter);
+}
 
 window.onload = function(){
-    let savedItems = localStorage.getItem("listItems");
-    if (savedItems) {
-        document.getElementById("ticketList").innerHTML = savedItems;
-    }
+    filter();
 }
 
 document.getElementById("ticketForm").addEventListener("submit", function(event) {
     event.preventDefault();
     addTicket();
-    let lis = document.getElementById("ticketList").innerHTML;
-    localStorage.setItem("listItems",lis);
     filter();
 });
 
@@ -117,6 +117,7 @@ function addTicket() {
         });
 
         ticketCounter += 1;
+        saveToStorage();
         form.reset();
     }
 }
@@ -178,7 +179,16 @@ function changeStatus()
         return;
     }
 
+    saveToStorage();
     document.getElementById("message_change").textContent = "Ticket status updated successfully.";
+    filter();
+}
+
+function resetMemory() 
+{
+    tickets = [];
+    ticketCounter = 1;
+    saveToStorage();
     filter();
 }
 
