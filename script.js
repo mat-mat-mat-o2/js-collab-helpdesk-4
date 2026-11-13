@@ -1,3 +1,15 @@
+function lightSnowman() 
+{
+    let img = document.getElementById("Snowman");
+
+    if (img.src.includes("Snowman.png")) 
+        {
+        img.src = "Snowman_light.png";
+    } else {
+        img.src = "Snowman.png";
+    }
+}
+
 let ticketCounter = 1;
 const tickets = [];
 
