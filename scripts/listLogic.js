@@ -1,20 +1,21 @@
-import { getticketCounter,gettickets } from '../script.js';
-
-let tickets= gettickets();
-let ticketCounter = getticketCounter();
+import { gettickets, getticketCounter } from '../script.js';
 
 export function saveToStorage() {
-    localStorage.setItem("tickets", JSON.stringify(tickets));
-    localStorage.setItem("ticketCounter", ticketCounter);
+    localStorage.setItem("tickets", JSON.stringify(gettickets()));
+    localStorage.setItem("ticketCounter", getticketCounter());
 }
 
 export function filter() {
-    const value_filter = document.getElementById("statusFilter").value;
+    const statusFilterEl = document.getElementById("statusFilter");
+    const value_filter = statusFilterEl ? statusFilterEl.value : "all";
     const list = document.getElementById("ticketList");
+
+    if (!list) return;
 
     list.innerHTML = "";
 
     let visibleCount = 0;
+    const tickets = gettickets();
 
     for (let i = 0; i < tickets.length; i++) {
         if (value_filter === "all" || tickets[i].status === value_filter) {
@@ -32,8 +33,11 @@ export function filter() {
         list.appendChild(emptyLi);
     }
 
-    document.getElementById("visibleCount").textContent = visibleCount;
-    document.getElementById("totalCount").textContent = tickets.length;
+    const visibleCountEl = document.getElementById("visibleCount");
+    const totalCountEl = document.getElementById("totalCount");
+
+    if (visibleCountEl) visibleCountEl.textContent = visibleCount;
+    if (totalCountEl) totalCountEl.textContent = tickets.length;
 }
 
 export function createTicketRow(ticket) {

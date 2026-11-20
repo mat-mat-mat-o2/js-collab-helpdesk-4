@@ -1,13 +1,8 @@
-import { getticketCounter,gettickets } from '../script.js';
-import { saveToStorage,filter,createTicketRow } from './listLogic.js';
-
-let tickets= gettickets();
-let ticketCounter = getticketCounter();
+import { getticketCounter, setticketCounter, gettickets, settickets } from '../script.js';
+import { saveToStorage, filter } from './listLogic.js';
 
 export function initTicketLogic(){
-    window.onload = function(){
-        filter();
-    }
+    filter();
 
     document.getElementById("ticketForm").addEventListener("submit", function(event) {
         event.preventDefault();
@@ -19,8 +14,8 @@ export function initTicketLogic(){
 
     function dataSanitization(id, title, status, priority) {
         const messageEl = document.getElementById("message_add");
-        
-        if (tickets.length >= 1000) {
+
+        if (gettickets().length >= 1000) {
             if (messageEl) {
                 messageEl.textContent = "The maximum limit of 1000 tickets has been reached.";
             }
@@ -38,7 +33,7 @@ export function initTicketLogic(){
         if (trimmedTitle.length < 3 || trimmedTitle.length > 80) {
             if (messageEl) {
                 messageEl.textContent = "The title must be between 3 and 80 characters long.";
-            } 
+            }
             return false;
         }
 
@@ -70,28 +65,29 @@ export function initTicketLogic(){
         const cleanTitle = rawTitle.trim();
         const priority = formData.get('priority') || "normal";
         const status = 'new';
-        const id = String(ticketCounter);
+        const id = String(getticketCounter());
 
         if (dataSanitization(id, cleanTitle, status, priority)) {
-            tickets.push({
+            gettickets().push({
                 id: id,
                 title: cleanTitle,
                 status: status,
                 priority: priority
             });
 
-            ticketCounter += 1;
+            setticketCounter(getticketCounter() + 1);
             saveToStorage();
             form.reset();
         }
     }
 
-    function changeStatus() 
+    function changeStatus()
     {
+        const tickets = gettickets();
         let ticketId = document.getElementById("ticketId").value;
         let newStatus = document.getElementById("newStatus").value;
 
-        if (ticketId.trim() === "" || isNaN(ticketId)) 
+        if (ticketId.trim() === "" || isNaN(ticketId))
         {
             document.getElementById("message_change").textContent = "Ticket ID must be a number.";
             return;
@@ -99,9 +95,9 @@ export function initTicketLogic(){
 
         let found = false;
 
-        for (let i = 0; i < tickets.length; i++) 
+        for (let i = 0; i < tickets.length; i++)
         {
-            if (Number(ticketId) === Number(tickets[i].id)) 
+            if (Number(ticketId) === Number(tickets[i].id))
             {
                 tickets[i].status = newStatus;
                 found = true;
@@ -120,12 +116,10 @@ export function initTicketLogic(){
         filter();
     }
 
-    function resetMemory() 
+    function resetMemory()
     {
-        tickets = [];
-        ticketCounter = 1;
-        localStorage.setItem("tickets", JSON.stringify(tickets));
-        localStorage.setItem("ticketCounter", ticketCounter);
+        settickets([]);
+        setticketCounter(1);
         filter();
     }
 

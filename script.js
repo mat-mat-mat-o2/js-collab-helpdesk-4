@@ -1,7 +1,24 @@
+function loadTickets() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem("tickets"));
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+}
 
-export let ticketCounter = Number(localStorage.getItem("ticketCounter")) || 1;
-export let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
-export const link = document.createElement('a');
+function loadTicketCounter(list) {
+    const stored = Number(localStorage.getItem("ticketCounter")) || 1;
+    const maxId = list
+        .map(ticket => Number(ticket && ticket.id))
+        .filter(id => Number.isSafeInteger(id) && id >= 0)
+        .reduce((max, id) => Math.max(max, id), 0);
+    return Math.max(stored, maxId + 1);
+}
+
+export let tickets = loadTickets();
+export let ticketCounter = loadTicketCounter(tickets);
+export let link = document.createElement('a');
 export let filename;
 export let qbajzmibpbisqvoqavbqb = Number(localStorage.getItem("qbajzmibpbisqvoqavbqb")) || 0;
 const lisioImg = document.getElementById("Fox");
@@ -18,9 +35,9 @@ export function getQbajzmibpbisqvoqavbqb(){
 }
 
 //tickets
-export function settickets(arg){
-    tickets=arg;
-    localStorage.setItem("tickets",arg);
+export function settickets(arg) {
+    tickets = arg;
+    localStorage.setItem("tickets", JSON.stringify(arg));
 }
 
 export function gettickets(){
@@ -121,74 +138,71 @@ document.addEventListener('DOMContentLoaded', function () {
     loadFoxModule();
     loadExport();
     loadImport();
-});
 
-document.addEventListener('DOMContentLoaded', function () {
+    const headings = [document.querySelector('h1'), document.querySelector('.tickets-section > h2')];
 
-        const headings = [document.querySelector('h1'), document.querySelector('.tickets-section > h2')];
+    const colors = ['#ffa81d','#59ce7e','#ffdb45','#398cff','#f247de'];
 
-        const colors = ['#ffa81d','#59ce7e','#ffdb45','#398cff','#f247de'];
+    function createLights(heading) 
+    {
 
-        function createLights(heading) 
+        if (!heading) return;
+        let lights = heading.querySelector('.title-lights');
+
+        if (!lights) 
         {
+            lights = document.createElement('div');
+            lights.className = 'title-lights';
+            heading.appendChild(lights);
+        }
 
-            if (!heading) return;
-            let lights = heading.querySelector('.title-lights');
+        lights.innerHTML = '';
 
-            if (!lights) 
+        const width = lights.clientWidth;
+        const height = lights.clientHeight;
+        const inset = 5;
+        const left = inset;
+        const right = width - inset;
+        const top = inset;
+        const bottom = height - inset;
+        const horizontal = right - left;
+        const vertical = bottom - top;
+        const perimeter = 2 * (horizontal + vertical);
+        const spacing = 55;
+        const count = Math.floor(perimeter / spacing);
+        const actualSpacing = perimeter / count;
+
+        for (let i = 0; i < count; i++) 
+        {
+            const distance = i * actualSpacing;
+            let x, y;
+
+            if (distance < horizontal) 
             {
-                lights = document.createElement('div');
-                lights.className = 'title-lights';
-                heading.appendChild(lights);
+                x = left + distance;
+                y = top;
             }
 
-            lights.innerHTML = '';
-
-            const width = lights.clientWidth;
-            const height = lights.clientHeight;
-            const inset = 5;
-            const left = inset;
-            const right = width - inset;
-            const top = inset;
-            const bottom = height - inset;
-            const horizontal = right - left;
-            const vertical = bottom - top;
-            const perimeter = 2 * (horizontal + vertical);
-            const spacing = 55;
-            const count = Math.floor(perimeter / spacing);
-            const actualSpacing = perimeter / count;
-
-            for (let i = 0; i < count; i++) 
+            else if (distance < horizontal + vertical) 
             {
-                const distance = i * actualSpacing;
-                let x, y;
-
-                if (distance < horizontal) 
-                {
-                    x = left + distance;
-                    y = top;
-                }
-
-                else if (distance < horizontal + vertical) 
-                {
-                    x = right;
-                    y = top + (distance - horizontal);
-                }
-
-                else if (distance < 2 * horizontal + vertical) 
-                {
-                    x = right - (distance - horizontal - vertical);
-                    y = bottom;
-                }
-
-                else 
-                {
-                    x = left;
-                    y = bottom - (distance - 2 * horizontal - vertical);
-                }
-
-                createBulb(x, y);
+                x = right;
+                y = top + (distance - horizontal);
             }
+
+            else if (distance < 2 * horizontal + vertical) 
+            {
+                x = right - (distance - horizontal - vertical);
+                y = bottom;
+            }
+
+            else 
+            {
+                x = left;
+                y = bottom - (distance - 2 * horizontal - vertical);
+            }
+
+            createBulb(x, y);
+        }
 
             
         function createBulb(x, y) 
@@ -215,6 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headings.forEach(createLights);
         });
 
+        if(qbajzmibpbisqvoqavbqb>=10) document.getElementById("backgroundMusic").src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
     });
 
 // - Jak to jest być skrybą? Dobrze?

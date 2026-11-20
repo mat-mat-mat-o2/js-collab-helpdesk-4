@@ -29,7 +29,7 @@ export function initLisLogic(){
         particle.remove();
     });
 
-    if(qbajzmibpbisqvoqavbqb>=10) document.getElementById("backgroundMusic").src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
+    if(qbajzmibpbisqvoqavbqb==10) document.getElementById("backgroundMusic").src='./sounds/foxSounds/qbajzmibpbisqvoqavbqb.mp3';
     setQbajzmibpbisqvoqavbqb(getQbajzmibpbisqvoqavbqb()+1);
     });
 
